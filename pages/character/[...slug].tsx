@@ -4,8 +4,9 @@ import blizzAPI from "../../utils/blizzAPI";
 import Head from "next/head";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FadeIn from "../../components/fadeIn";
+import Loading from "../../components/loading";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: true };
@@ -35,28 +36,36 @@ export async function getStaticProps({ params }) {
 
 const Character: NextPage = ({ charData, dungeonList }) => {
   const router = useRouter();
-  const dungeons = dungeonList.current_leaderboards;
+  console.log(charData);
 
   const [buttonPress, setButtonPress] = useState(false);
 
-  charData.best_runs = dungeons
-    .map((dungeon) => {
-      return charData.best_runs.filter((run) => {
-        return run.dungeon.name === dungeon.name;
-      });
-    })
-    .map((runs) => {
-      if (runs.length === 1) {
-        return runs[0];
-      }
+  if (dungeonList) {
+    const dungeons = dungeonList.current_leaderboards;
 
-      if (runs[0].mythic_rating.rating > runs[1].mythic_rating.rating) {
-        return runs[0];
-      } else return runs[1];
-    });
+    charData.best_runs = dungeons
+      .map((dungeon) => {
+        return charData.best_runs.filter((run) => {
+          return run.dungeon.name === dungeon.name;
+        });
+      })
+      .map((runs) => {
+        if (runs.length === 1) {
+          return runs[0];
+        }
+
+        if (runs[0].mythic_rating.rating > runs[1].mythic_rating.rating) {
+          return runs[0];
+        } else return runs[1];
+      });
+  }
 
   if (router.isFallback) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="h-screen w-screen bg-slate-900 flex items-center">
+        <Loading />
+      </div>
+    );
   }
 
   return (
@@ -67,7 +76,6 @@ const Character: NextPage = ({ charData, dungeonList }) => {
       </Head>
 
       <div className="p-4 w-screen h-screen bg-slate-900">
-        {/* <div>{console.log(charData)}</div> */}
         <Link href={"/"}>
           <button
             className={`${
@@ -98,7 +106,10 @@ const Character: NextPage = ({ charData, dungeonList }) => {
           <div className="grid grid-cols-4 gap-4 w-max m-auto">
             {charData.best_runs.map((run) => {
               return (
-                <div className="flex-col text-center h-72 w-72 relative border border-slate-900 rounded-sm cursor-pointer hover:scale-105 bg-gradient-to-b from-slate-800 hover:to-indigo-900 transition duration-500 ease-in-out">
+                <div
+                  key={run.dungeon.name}
+                  className="flex-col text-center h-72 w-72 relative border border-slate-900 rounded-sm cursor-pointer hover:scale-105 bg-gradient-to-b from-slate-800 hover:to-indigo-900 transition duration-500 ease-in-out"
+                >
                   <div className="text-base text-indigo-200 bg-indigo-800 w-10/12 rounded-lg p-1 tracking-wide font-medium m-auto mt-3 mb-3 mb-0.25">
                     {run.dungeon.name}
                   </div>

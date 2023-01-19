@@ -86,7 +86,9 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
         </div>
         <Filters dungeons={dungeonList} realms={realmList} />
         {loading ? (
-          <Loading />
+          <div className="bg-slate-900 w-screen h-screen">
+            <Loading />
+          </div>
         ) : (
           <Pagination currentLeaderBoard={currentLeaderBoard} />
         )}
