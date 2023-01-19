@@ -6,9 +6,9 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const specMedia = await blizzAPI.query(
-		"/data/wow/media/playable-specialization/262?namespace=static-us&locale=en_US"
+	const dungeonList = await blizzAPI.query(
+		"/data/wow/connected-realm/11/mythic-leaderboard/index?namespace=dynamic-us&locale=en_US"
 	);
 
-	res.status(200).send(specMedia);
+	res.status(200).send(dungeonList);
 }

@@ -1,86 +1,165 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import type { NextPage } from "next";
+import Link from "next/link";
+import Head from "next/head";
+import blizzAPI from "../utils/blizzAPI";
+import type { blizzApiMythicPlusLeaderBoard } from "../utils/types";
+import specMedia from "../utils/specMedia";
+import { useEffect, useState, useRef } from "react";
+import Filters from "../components/filters";
+import { setLeaderBoardData } from "../slices/leaderBoardSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectDungeonId,
+  selectConnectedRealm,
+  selectLeaderBoardData,
+} from "../slices/leaderBoardSlice";
+import Loading from "../components/loading";
+import { msToTime } from "../utils/helperFunctions";
+import FadeIn from "../components/fadeIn";
+import { createSelector } from "@reduxjs/toolkit";
 
-const Home: NextPage = () => {
+// export async function getStaticProps() {
+// 	console.log("static props");
+// 	const mPlusData = await blizzAPI.query(
+// 		"/data/wow/connected-realm/4/mythic-leaderboard/2/period/887?namespace=dynamic-us&locale=en_US"
+// 	);
+
+// 	return {
+// 		props: {
+// 			mPlusData,
+// 		},
+// 	};
+// }
+
+export async function getStaticProps() {
+  console.log("static props");
+  const dungeonList = await blizzAPI.query(
+    "/data/wow/connected-realm/11/mythic-leaderboard/index?namespace=dynamic-us&locale=en_US"
+  );
+  const realmList = await blizzAPI.query(
+    "/data/wow/search/connected-realm?namespace=dynamic-us&orderby=id"
+  );
+  return {
+    props: {
+      dungeonList,
+      realmList,
+    },
+  };
+}
+
+const Home: NextPage = ({ dungeonList, realmList }) => {
+  const dispatch = useDispatch();
+
+  const initialRender = useRef(true);
+
+  const [currentLeaderBoard, setCurrentLeaderBoard] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const selectedDungeonId = useSelector(selectDungeonId);
+  const selectedRealmId = useSelector(selectConnectedRealm);
+  const storedLeaderBoard = useSelector(selectLeaderBoardData);
+
+  const getLeaderBoard = async () => {
+    const response = await fetch(
+      `/api/leaderboard/${selectedRealmId}/${selectedDungeonId}`
+    );
+    const data = await response.json();
+
+    setCurrentLeaderBoard(data);
+    dispatch(setLeaderBoardData(data));
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    //not registering initial drop down change when app loads
+    //trying to make it bring in stored leaderboard when I hit "back", otherwise, fetch fresh data.
+    if (initialRender.current && storedLeaderBoard.name) {
+      initialRender.current = false;
+      setLoading(false);
+      setCurrentLeaderBoard(storedLeaderBoard);
+    } else {
+      initialRender.current = false;
+      setLoading(true);
+      getLeaderBoard();
+    }
+  }, [selectedDungeonId, selectedRealmId]);
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <>
       <Head>
-        <title>Create Next App</title>
+        <title>Mythic+ Leaderboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+      <main className="bg-slate-900 w-screen h-full">
+        <div className="p-20 text-center">
+          <div className="text-6xl font-black tracking-wider text-stone-100">
+            M+ Weekly Leaderboard
+          </div>
         </div>
+        <Filters dungeons={dungeonList} realms={realmList} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <FadeIn delay={100} duration={800}>
+            <table className="w-3/4 border-collapse m-auto ">
+              <thead>
+                <tr className="flex mb-1 gap-4 text-stone-100">
+                  <th className=" w-2/12 font-light" scope="col">
+                    Rank
+                  </th>
+                  <th className="w-5/12 font-light" scope="col">
+                    Keystone Level
+                  </th>
+                  <th className="w-3/12 font-light" scope="col">
+                    Time
+                  </th>
+                  <th className="w-5/12 text-start font-light" scope="col">
+                    Party
+                  </th>
+                  <th className="w-5/12 text-start" scope="col"></th>
+                  <th className="w-5/12 text-start" scope="col"></th>
+                  <th className="w-5/12 text-start" scope="col"></th>
+                  <th className="w-5/12 text-start" scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentLeaderBoard.leading_groups.map((group) => (
+                  <tr
+                    className="h-10 items-center flex bg-gray mb-2 gap-4 font-light rounded-sm cursor-pointer hover:bg-slate-700 bg-slate-800 rounded-sm text-indigo-200"
+                    key={group.ranking}
+                  >
+                    <td className="w-2/12 text-center">{group.ranking}</td>
+                    <td className="w-5/12 text-center">
+                      {group.keystone_level}
+                    </td>
+                    <td className="w-3/12">{msToTime(group.duration)}</td>
+
+                    {group.members.map((member) => (
+                      <td className="flex w-5/12 gap-1" key={member.profile.id}>
+                        <img
+                          className="w-5 h-5"
+                          src={specMedia[member.specialization.id]}
+                        ></img>
+                        <Link
+                          className="hover:scale-105 hover:text-white"
+                          href={`/character/${
+                            member.profile.realm.slug
+                          }/${member.profile.name.toLowerCase()}`}
+                        >
+                          {member.profile.name}
+                        </Link>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </FadeIn>
+        )}
       </main>
+    </>
+  );
+};
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
-    </div>
-  )
-}
-
-export default Home
+export default Home;
