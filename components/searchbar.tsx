@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { selectRealms } from "../slices/realmSlice";
 
-export default function SearchBar({ realmList }) {
+export default function SearchBar() {
   const router = useRouter();
+
+  const realmList = useSelector(selectRealms);
 
   const [realmSearching, setRealmSearching] = useState(false);
   const [filteredRealms, setFilteredRealms] = useState([]);
@@ -40,19 +44,23 @@ export default function SearchBar({ realmList }) {
   };
 
   useEffect(() => {
-    setCleanRealmList(setRealms());
-  }, []);
+    if (realmList.results) {
+      setCleanRealmList(setRealms());
+    }
+  }, [realmList]);
 
   const handleRealmSearch = (event) => {
+    //tells the realm drop down to show
     setRealmSearching(true);
 
+    //filters the realms to only consist of realms that include the text user inputs
     const searchVal = event.target.value.toLowerCase();
-    setRealmSearch(searchVal);
-
     const filterArr = cleanRealmList.filter((realm) => {
       return realm.name.toLowerCase().includes(searchVal.toLowerCase());
     });
 
+    //sorts, and reduces the length of the results to show user.
+    //puts it in state for the component to display
     setFilteredRealms(
       filterArr
         .sort((a, b) => {
@@ -62,6 +70,19 @@ export default function SearchBar({ realmList }) {
         })
         .slice(0, 8)
     );
+
+    //if user search is an exact name match, search based on the slug.
+    //if it's not, search will end up sending to 404 because slug is wrong
+    //this would be a user error, they need to spell the realm correctly, or click on an option from dropdown
+    const match = filterArr.filter((realm) => {
+      return realm.name.toLowerCase() === searchVal.toLowerCase();
+    });
+
+    if (match.length > 0) {
+      setRealmSearch(match[0].slug);
+    } else {
+      setRealmSearch(searchVal);
+    }
   };
 
   const handleRealmClick = (realm) => {
@@ -97,7 +118,7 @@ export default function SearchBar({ realmList }) {
           {realmSearching && filteredRealms.length > 0 && realmSearch > "" ? (
             <ul
               id="realmDropDown"
-              className="w-36 h-max bg-slate-300 text-slate-900 rounded-sm space-y-2 list-none text-left text-sm font-sans font-light pl-2 pt-2 pb-2 mt-1 absolute"
+              className="w-36 h-max bg-slate-300 text-slate-900 rounded-sm space-y-2 list-none text-left text-sm font-sans font-light pl-2 pt-1 pb-1 mt-1 absolute"
             >
               {filteredRealms.map((realm) => {
                 return (
@@ -136,9 +157,9 @@ export default function SearchBar({ realmList }) {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             ></path>
           </svg>

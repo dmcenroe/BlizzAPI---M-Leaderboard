@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import leaderBoardReducer from "./slices/leaderBoardSlice";
+import realmReducer from "./slices/realmSlice";
 
 export const store = configureStore({
-	reducer: {
-		leaderBoard: leaderBoardReducer,
-	},
+  reducer: {
+    leaderBoard: leaderBoardReducer,
+    realms: realmReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

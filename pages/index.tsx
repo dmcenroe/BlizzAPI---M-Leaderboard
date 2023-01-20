@@ -2,8 +2,6 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import Head from "next/head";
 import blizzAPI from "../utils/blizzAPI";
-import type { blizzApiMythicPlusLeaderBoard } from "../utils/types";
-import specMedia from "../utils/specMedia";
 import { useEffect, useState, useRef } from "react";
 import Filters from "../components/filters";
 import { setLeaderBoardData } from "../slices/leaderBoardSlice";
@@ -13,9 +11,8 @@ import {
   selectConnectedRealm,
   selectLeaderBoardData,
 } from "../slices/leaderBoardSlice";
+import { setRealms } from "../slices/realmSlice";
 import Loading from "../components/loading";
-import { msToTime } from "../utils/helperFunctions";
-import FadeIn from "../components/fadeIn";
 import Pagination from "../components/pagination";
 import { Navbar } from "../components/navbar";
 
@@ -59,8 +56,6 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
   };
 
   useEffect(() => {
-    //not registering initial drop down change when app loads
-    //trying to make it bring in stored leaderboard when I hit "back", otherwise, fetch fresh data.
     if (initialRender.current && storedLeaderBoard.name) {
       initialRender.current = false;
       setLoading(false);
@@ -72,7 +67,9 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
     }
   }, [selectedDungeonId, selectedRealmId]);
 
-  console.log(currentLeaderBoard);
+  useEffect(() => {
+    dispatch(setRealms(realmList));
+  }, [realmList]);
 
   return (
     <>
