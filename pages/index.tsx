@@ -17,6 +17,7 @@ import Loading from "../components/loading";
 import { msToTime } from "../utils/helperFunctions";
 import FadeIn from "../components/fadeIn";
 import Pagination from "../components/pagination";
+import { Navbar } from "../components/navbar";
 
 export async function getStaticProps() {
   console.log("static props");
@@ -71,12 +72,15 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
     }
   }, [selectedDungeonId, selectedRealmId]);
 
+  console.log(currentLeaderBoard);
+
   return (
     <>
       <Head>
         <title>Mythic+ Leaderboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Navbar realmList={realmList} />
 
       <main className="bg-slate-900 w-screen h-full">
         <div className="p-20 text-center">

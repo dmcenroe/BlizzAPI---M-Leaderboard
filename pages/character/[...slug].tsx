@@ -7,30 +7,34 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import FadeIn from "../../components/fadeIn";
 import Loading from "../../components/loading";
+import { Navbar } from "../../components/navbar";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: true };
 }
 
 export async function getStaticProps({ params }) {
-  console.log(params.slug);
   const realm = params.slug[0];
   const char = params.slug[1];
   if (params) {
-    const charData = await blizzAPI.query(
-      `/profile/wow/character/${realm}/${char}/mythic-keystone-profile/season/9?namespace=profile-us&locale=en_US`
-    );
+    try {
+      const charData = await blizzAPI.query(
+        `/profile/wow/character/${realm}/${char}/mythic-keystone-profile/season/9?namespace=profile-us&locale=en_US`
+      );
 
-    const dungeonList = await blizzAPI.query(
-      "/data/wow/connected-realm/11/mythic-leaderboard/index?namespace=dynamic-us&locale=en_US"
-    );
+      const dungeonList = await blizzAPI.query(
+        "/data/wow/connected-realm/11/mythic-leaderboard/index?namespace=dynamic-us&locale=en_US"
+      );
 
-    return {
-      props: {
-        charData,
-        dungeonList,
-      },
-    };
+      return {
+        props: {
+          charData,
+          dungeonList,
+        },
+      };
+    } catch (error) {
+      return { redirect: { destination: "/404", permanent: false } };
+    }
   }
 }
 

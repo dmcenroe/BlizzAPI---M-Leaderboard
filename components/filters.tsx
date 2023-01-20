@@ -66,7 +66,6 @@ export default function Filters({ dungeons, realms }) {
         }}
         className="block w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
       >
-        {console.log("mapping")}
         {realmList.map((connectedRealm) =>
           connectedRealm.realms.map((singleRealm) => (
             <option key={singleRealm.id} value={connectedRealm.id}>
@@ -80,7 +79,7 @@ export default function Filters({ dungeons, realms }) {
         onChange={(event) => {
           handleDungeonChange(event);
         }}
-        className="block w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+        className="block w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate"
       >
         {dungeonList.map((dungeon) => (
           <option key={dungeon.id} value={dungeon.id}>
