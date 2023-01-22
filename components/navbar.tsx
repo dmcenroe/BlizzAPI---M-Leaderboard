@@ -14,9 +14,9 @@ export function Navbar() {
         </Link>
         <Link
           className="text-slate-200 font-sans text-xl font-semibold text-left hover:underline underline-offset-8 pl-2"
-          href={"/analysis"}
+          href={"/stats"}
         >
-          Analysis
+          Stats
         </Link>
       </div>
       <div className="">

@@ -9,12 +9,15 @@
     "@heroicons/react": "^2.0.13",
     "@reduxjs/toolkit": "^1.9.1",
     "blizzapi": "^2.3.2",
+    "chart.js": "^4.2.0",
     "next": "latest",
     "react": "18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
     "recharts": "^2.3.2",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "victory": "^36.6.8"
   },
   "devDependencies": {
     "@types/node": "18.11.3",

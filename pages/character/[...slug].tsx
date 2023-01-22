@@ -49,33 +49,11 @@ const Character: NextPage = ({ charData, dungeonList }) => {
     if (dungeonList) {
       const dungeons = dungeonList.current_leaderboards;
 
-      // charData.best_runs = dungeons
-      //   .map((dungeon) => {
-      //     return charData.best_runs.filter((run) => {
-      //       return run.dungeon.name === dungeon.name;
-      //     });
-      //   })
-      //   .map((runs) => {
-      //     if (runs.length === 1) {
-      //       return runs[0];
-      //     }
-
-      //     if (runs.length < 1) {
-      //       return { complete: false };
-      //     }
-
-      //     if (runs[0].mythic_rating.rating > runs[1].mythic_rating.rating) {
-      //       return runs[0];
-      //     } else return runs[1];
-      //   });
-
       const dungeonRuns = dungeons.map((dungeon) => {
         return charData.best_runs.filter((run) => {
           return run.dungeon.name === dungeon.name;
         });
       });
-
-      console.log("dungeon runs", dungeonRuns);
 
       const topRuns = dungeonRuns.map((runs) => {
         if (runs.length === 0) {

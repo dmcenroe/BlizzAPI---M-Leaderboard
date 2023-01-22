@@ -26,7 +26,6 @@ export default function Filters({ dungeons }) {
     dispatch(setDungeonId(event.target.value));
   };
 
-  const selectedRealmId = useSelector(selectConnectedRealm);
   const selectedDungeonId = useSelector(selectDungeonId);
 
   const setDungeons = () => {

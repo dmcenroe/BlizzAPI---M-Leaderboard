@@ -100,7 +100,7 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
             M+ Weekly Leaderboard
           </div>
         </div>
-        <Filters dungeons={dungeonList} realms={realmList} />
+        <Filters dungeons={dungeonList} />
         {loading ? (
           <div className="bg-slate-900 w-screen h-screen">
             <Loading />
