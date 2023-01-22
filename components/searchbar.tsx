@@ -6,11 +6,10 @@ import { selectRealms } from "../slices/realmSlice";
 export default function SearchBar() {
   const router = useRouter();
 
-  const realmList = useSelector(selectRealms);
+  const cleanRealmList = useSelector(selectRealms);
 
   const [realmSearching, setRealmSearching] = useState(false);
   const [filteredRealms, setFilteredRealms] = useState([]);
-  const [cleanRealmList, setCleanRealmList] = useState([]);
   const [charSearch, setCharSearch] = useState("");
   const [realmSearch, setRealmSearch] = useState("");
 
@@ -25,29 +24,10 @@ export default function SearchBar() {
   useEffect(() => {
     document.addEventListener("click", onClickAnywhere);
 
-    return () => document.removeEventListener("click", onClickAnywhere);
+    return () => {
+      document.removeEventListener("click", onClickAnywhere);
+    };
   }, []);
-
-  const setRealms = () => {
-    const realmArr = [];
-
-    const newArr = realmList.results.map((realmGroup) => {
-      realmGroup.data.realms.forEach((realm) => {
-        realmArr.push({
-          id: realm.id,
-          name: realm.name.en_US,
-          slug: realm.slug,
-        });
-      });
-    });
-    return realmArr;
-  };
-
-  useEffect(() => {
-    if (realmList.results) {
-      setCleanRealmList(setRealms());
-    }
-  }, [realmList]);
 
   const handleRealmSearch = (event) => {
     //tells the realm drop down to show
@@ -123,10 +103,11 @@ export default function SearchBar() {
               {filteredRealms.map((realm) => {
                 return (
                   <li
+                    key={realm.id}
                     onClick={() => {
                       handleRealmClick(realm);
                     }}
-                    className="hover:underline underline-offset-4 cursor-pointer"
+                    className={`hover:underline underline-offset-4 cursor-pointer `}
                   >
                     {realm.name}
                   </li>

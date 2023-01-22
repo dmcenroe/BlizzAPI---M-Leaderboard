@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Link from "next/link";
 import Head from "next/head";
 import blizzAPI from "../utils/blizzAPI";
 import { useEffect, useState, useRef } from "react";
@@ -68,8 +67,24 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
   }, [selectedDungeonId, selectedRealmId]);
 
   useEffect(() => {
-    dispatch(setRealms(realmList));
+    dispatch(setRealms(cleanRealms(realmList)));
   }, [realmList]);
+
+  const cleanRealms = (realms) => {
+    const realmArr = [];
+
+    const newArr = realms.results.map((realmGroup) => {
+      realmGroup.data.realms.forEach((realm) => {
+        realmArr.push({
+          id: realm.id,
+          name: realm.name.en_US,
+          slug: realm.slug,
+          connectedRealmId: realmGroup.data.id,
+        });
+      });
+    });
+    return realmArr;
+  };
 
   return (
     <>
@@ -77,7 +92,7 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
         <title>Mythic+ Leaderboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar realmList={realmList} />
+      <Navbar />
 
       <main className="bg-slate-900 w-screen h-full">
         <div className="p-20 text-center">

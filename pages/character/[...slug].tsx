@@ -43,17 +43,45 @@ const Character: NextPage = ({ charData, dungeonList }) => {
   console.log(charData);
 
   const [buttonPress, setButtonPress] = useState(false);
+  const [bestRuns, setBestRuns] = useState([]);
 
-  if (dungeonList) {
-    const dungeons = dungeonList.current_leaderboards;
+  useEffect(() => {
+    if (dungeonList) {
+      const dungeons = dungeonList.current_leaderboards;
 
-    charData.best_runs = dungeons
-      .map((dungeon) => {
+      // charData.best_runs = dungeons
+      //   .map((dungeon) => {
+      //     return charData.best_runs.filter((run) => {
+      //       return run.dungeon.name === dungeon.name;
+      //     });
+      //   })
+      //   .map((runs) => {
+      //     if (runs.length === 1) {
+      //       return runs[0];
+      //     }
+
+      //     if (runs.length < 1) {
+      //       return { complete: false };
+      //     }
+
+      //     if (runs[0].mythic_rating.rating > runs[1].mythic_rating.rating) {
+      //       return runs[0];
+      //     } else return runs[1];
+      //   });
+
+      const dungeonRuns = dungeons.map((dungeon) => {
         return charData.best_runs.filter((run) => {
           return run.dungeon.name === dungeon.name;
         });
-      })
-      .map((runs) => {
+      });
+
+      console.log("dungeon runs", dungeonRuns);
+
+      const topRuns = dungeonRuns.map((runs) => {
+        if (runs.length === 0) {
+          return { keystone_level: 50, complete: false };
+        }
+
         if (runs.length === 1) {
           return runs[0];
         }
@@ -62,7 +90,37 @@ const Character: NextPage = ({ charData, dungeonList }) => {
           return runs[0];
         } else return runs[1];
       });
-  }
+
+      console.log(
+        topRuns.sort((a, b) => {
+          if (a.keystone_level < b.keystone_level) {
+            return -1;
+          }
+
+          if (a.keystone_level > b.keystone_level) {
+            return 1;
+          }
+
+          return 0;
+        })
+      );
+
+      setBestRuns(
+        topRuns.sort((a, b) => {
+          if (a.keystone_level < b.keystone_level) {
+            return -1;
+          }
+
+          if (a.keystone_level > b.keystone_level) {
+            return 1;
+          }
+
+          return 0;
+        })
+      );
+      console.log("bestruns ok", bestRuns);
+    }
+  }, [charData]);
 
   if (router.isFallback) {
     return (
@@ -78,6 +136,8 @@ const Character: NextPage = ({ charData, dungeonList }) => {
         <title>{charData.character.name} Mythic+ Profile</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Navbar />
 
       <div className="p-4 w-screen h-screen bg-slate-900">
         <Link href={"/"}>
@@ -108,27 +168,29 @@ const Character: NextPage = ({ charData, dungeonList }) => {
         </div>
         <FadeIn delay={100} duration={800}>
           <div className="grid grid-cols-4 gap-4 w-max m-auto">
-            {charData.best_runs.map((run) => {
-              return (
-                <div
-                  key={run.dungeon.name}
-                  className="flex-col text-center h-72 w-72 relative border border-slate-900 rounded-sm cursor-pointer hover:scale-105 bg-gradient-to-b from-slate-800 hover:to-indigo-900 transition duration-500 ease-in-out"
-                >
-                  <div className="text-base text-indigo-200 bg-indigo-800 w-10/12 rounded-lg p-1 tracking-wide font-medium m-auto mt-3 mb-3 mb-0.25">
-                    {run.dungeon.name}
+            {bestRuns.map((run) => (
+              <div>
+                {run.complete === false ? null : (
+                  <div
+                    key={run.dungeon.name}
+                    className="flex-col text-center h-72 w-72 relative border border-slate-900 rounded-sm cursor-pointer hover:scale-105 bg-gradient-to-b from-slate-800 hover:to-indigo-900 transition duration-500 ease-in-out"
+                  >
+                    <div className="text-base text-indigo-200 bg-indigo-800 w-10/12 rounded-lg p-1 tracking-wide font-medium m-auto mt-3 mb-3 mb-0.25">
+                      {run.dungeon.name}
+                    </div>
+                    <div className="text-sm text-rose-400 font-light tracking-wider">
+                      {run.keystone_affixes[0].name}
+                    </div>
+                    <div className="text-stone-100 text-7xl font-black top-1/2 left-1/2 transform -translate-y-1/4 -translate-x-1/2 absolute">
+                      {run.keystone_level}
+                    </div>
+                    <div className="tracking-wide text-sm font-light text-amber-300 absolute bottom-2 left-1/2 transform -translate-x-1/2">
+                      {run.mythic_rating.rating.toFixed(2)}
+                    </div>
                   </div>
-                  <div className="text-sm text-rose-400 font-light tracking-wider">
-                    {run.keystone_affixes[0].name}
-                  </div>
-                  <div className="text-stone-100 text-7xl font-black top-1/2 left-1/2 transform -translate-y-1/4 -translate-x-1/2 absolute">
-                    {run.keystone_level}
-                  </div>
-                  <div className="tracking-wide text-sm font-light text-amber-300 absolute bottom-2 left-1/2 transform -translate-x-1/2">
-                    {run.mythic_rating.rating.toFixed(2)}
-                  </div>
-                </div>
-              );
-            })}
+                )}
+              </div>
+            ))}
           </div>
         </FadeIn>
       </div>

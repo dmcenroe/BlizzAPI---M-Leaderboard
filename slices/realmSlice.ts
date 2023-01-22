@@ -4,11 +4,13 @@ import type { RootState } from "../store";
 
 export interface RealmState {
   realms: object;
+  singleRealmSelection: number;
 }
 
 // Define the initial state using that type
 const initialState: RealmState = {
   realms: {},
+  singleRealmSelection: 4,
 };
 
 export const realmSlice = createSlice({
@@ -19,12 +21,17 @@ export const realmSlice = createSlice({
     setRealms: (state, action: PayloadAction<object>) => {
       state.realms = action.payload;
     },
+    setSingleRealmSelection: (state, action: PayloadAction<number>) => {
+      state.singleRealmSelection = action.payload;
+    },
   },
 });
 
-export const { setRealms } = realmSlice.actions;
+export const { setRealms, setSingleRealmSelection } = realmSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectRealms = (state: RootState) => state.realms.realms;
+export const selectSingleRealmSelection = (state: RootState) =>
+  state.realms.singleRealmSelection;
 
 export default realmSlice.reducer;
