@@ -91,7 +91,7 @@ export default function SearchBar() {
             handleRealmSearch(event);
           }}
           autoComplete="off"
-          className="w-20 lg:w-36 h-8 lg:h-9 pl-2 rounded-l-sm text-slate-900 text-sm bg-slate-300 placeholder:text-slate-500 focus:outline-0"
+          className="w-20 lg:w-36 h-8 lg:h-9 pl-2 rounded-l-sm rounded-r-none text-slate-900 text-sm bg-slate-300 placeholder:text-slate-500 focus:outline-0"
           placeholder="realm..."
         ></input>
         {realmSearching && filteredRealms.length > 0 && realmSearch > "" ? (
@@ -123,7 +123,7 @@ export default function SearchBar() {
           setCharSearch(event.target.value);
         }}
         autoComplete="off"
-        className="w-24 lg:w-36 h-8 lg:h-9 pl-2 text-sm bg-slate-100 placeholder:text-slate-500 focus:outline-0"
+        className="w-24 lg:w-36 h-8 lg:h-9 pl-2 rounded-l-none text-sm bg-slate-100 placeholder:text-slate-500 focus:outline-0"
         placeholder="character..."
       ></input>
 

@@ -116,7 +116,7 @@ const Character = ({ charData, dungeonList }) => {
         </Link>
       </div>
       <div className=" bg-slate-900 flex flex-col items-center pb-8">
-        <div className="text-7xl font-black tracking-wider text-stone-100 font-sans m-auto w-max mb-3 lg:pt-12 pt-8">
+        <div className="text-4xl lg:text-7xl font-black tracking-wider text-stone-100 font-sans m-auto w-max mb-3 lg:pt-12 pt-8">
           {charData.character.name}
         </div>
         <div className="text-l mb-20 text-stone-100 w-max m-auto bg-indigo-800 pl-3 pr-3 p-1 rounded-lg">
