@@ -9,7 +9,14 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import specMedia from "../utils/specMedia";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from "victory";
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryAxis,
+  VictoryLabel,
+  VictoryZoomContainer,
+  VictoryClipContainer,
+} from "victory";
 import Loading from "../components/loading";
 
 export async function getStaticProps() {
@@ -87,11 +94,19 @@ const Stats = ({ dungeonList }) => {
     );
   };
 
+  const CustomIconBig = ({ x, y, text }) => {
+    return (
+      <foreignObject x={x - 30} y={y - 14} width={30} height={30}>
+        <img className="rounded-md" src={`${specMedia[text]}`}></img>
+      </foreignObject>
+    );
+  };
+
   return (
-    <div>
+    <div className="w-full min-h-screen bg-slate-900 border-4 border-red-800">
       <Navbar />
       <div className="p-12">
-        <div className="text-5xl font-sans text-stone-200 font-extrabold text-center mb-20">
+        <div className="text-2xl lg:text-5xl font-sans text-stone-200 font-extrabold text-center mb-12">
           Specialization Popularity
         </div>
         <Filters dungeons={dungeonList} />
@@ -99,60 +114,128 @@ const Stats = ({ dungeonList }) => {
           <Loading />
         ) : (
           <div>
-            <div className="text-xl font-sans text-stone-200 font-light text-center mt-24 -mb-12">
+            <div className="text-xl font-sans text-stone-200 font-light text-center mt-24">
               % Mythic+ Spec Frequency
             </div>
-            <VictoryChart domainPadding={20} width={650}>
-              <VictoryBar
-                style={{ data: { fill: "#3730A3" } }}
-                data={chartData}
-                barWidth={8}
-                animate={{
-                  duration: 1000,
-                  onLoad: { duration: 0 },
-                }}
-                x="name"
-                y="uv"
-                labels={({ datum }) => `${datum.uv.toFixed(1)}`}
-                labelComponent={
-                  <VictoryLabel style={[{ fill: "white", fontSize: 8 }]} />
+            <div className="hidden lg:block">
+              <VictoryChart
+                domainPadding={20}
+                width={650}
+                responsive={true}
+                containerComponent={
+                  <VictoryZoomContainer allowPan={true} allowZoom={true} />
                 }
-                events={[
-                  {
-                    target: "data",
-                    eventHandlers: {
-                      onMouseEnter: () => {
-                        return [
-                          {
-                            target: "data",
-                            mutation: (props) => {
-                              const fill = props.style && props.style.fill;
-                              return fill === "#4338CA"
-                                ? null
-                                : { style: { fill: "#4338CA" } };
+              >
+                <VictoryBar
+                  style={{ data: { fill: "#3730A3" } }}
+                  data={chartData}
+                  barWidth={8}
+                  animate={{
+                    duration: 1000,
+                    onLoad: { duration: 0 },
+                  }}
+                  x="name"
+                  y="uv"
+                  labels={({ datum }) => `${datum.uv.toFixed(1)}`}
+                  labelComponent={
+                    <VictoryLabel style={[{ fill: "white", fontSize: 8 }]} />
+                  }
+                  events={[
+                    {
+                      target: "data",
+                      eventHandlers: {
+                        onMouseEnter: () => {
+                          return [
+                            {
+                              target: "data",
+                              mutation: (props) => {
+                                const fill = props.style && props.style.fill;
+                                return fill === "#4338CA"
+                                  ? null
+                                  : { style: { fill: "#4338CA" } };
+                              },
                             },
-                          },
-                        ];
-                      },
-                      onMouseLeave: () => {
-                        return [
-                          {
-                            target: "data",
-                            mutation: (props) => {
-                              const fill = props.style && props.style.fill;
-                              return fill === "#3730A3"
-                                ? null
-                                : { style: { fill: "#3730A3" } };
+                          ];
+                        },
+                        onMouseLeave: () => {
+                          return [
+                            {
+                              target: "data",
+                              mutation: (props) => {
+                                const fill = props.style && props.style.fill;
+                                return fill === "#3730A3"
+                                  ? null
+                                  : { style: { fill: "#3730A3" } };
+                              },
                             },
-                          },
-                        ];
+                          ];
+                        },
                       },
                     },
-                  },
-                ]}
-              />
-              <VictoryAxis tickLabelComponent={<CustomIcon />} />
-            </VictoryChart>
+                  ]}
+                />
+                <VictoryAxis tickLabelComponent={<CustomIcon />} />
+              </VictoryChart>
+            </div>
+            <div className="block lg:hidden">
+              <VictoryChart
+                domainPadding={20}
+                width={500}
+                height={2000}
+                responsive={true}
+              >
+                <VictoryBar
+                  horizontal
+                  style={{ data: { fill: "#3730A3" } }}
+                  data={chartData}
+                  barWidth={30}
+                  animate={{
+                    duration: 1000,
+                    onLoad: { duration: 0 },
+                  }}
+                  x="name"
+                  y="uv"
+                  labels={({ datum }) => `${datum.uv.toFixed(1)}`}
+                  labelComponent={
+                    <VictoryLabel style={[{ fill: "white", fontSize: 24 }]} />
+                  }
+                  events={[
+                    {
+                      target: "data",
+                      eventHandlers: {
+                        onMouseEnter: () => {
+                          return [
+                            {
+                              target: "data",
+                              mutation: (props) => {
+                                const fill = props.style && props.style.fill;
+                                return fill === "#4338CA"
+                                  ? null
+                                  : { style: { fill: "#4338CA" } };
+                              },
+                            },
+                          ];
+                        },
+                        onMouseLeave: () => {
+                          return [
+                            {
+                              target: "data",
+                              mutation: (props) => {
+                                const fill = props.style && props.style.fill;
+                                return fill === "#3730A3"
+                                  ? null
+                                  : { style: { fill: "#3730A3" } };
+                              },
+                            },
+                          ];
+                        },
+                      },
+                    },
+                  ]}
+                />
+                <VictoryAxis tickLabelComponent={<CustomIconBig />} />
+              </VictoryChart>
+            </div>
           </div>
         )}
       </div>

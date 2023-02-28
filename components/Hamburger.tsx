@@ -42,25 +42,15 @@ export default function Hamburber() {
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </div>
-          <ul className="MENU-LINK-MOBILE-OPEN flex flex-col items-center justify-between min-h-[250px]">
+          <ul className="MENU-LINK-MOBILE-OPEN flex flex-col items-center min-h-[250px]">
             <li className="border-b-2 border-teal-600 my-8 uppercase">
               <Link onClick={() => setIsNavOpen(false)} href="/">
-                Home
+                Leaderboard
               </Link>
             </li>
             <li className="border-b-2 border-teal-600 my-8 uppercase">
-              <Link onClick={() => setIsNavOpen(false)} href="/portfolio">
-                Portfolio
-              </Link>
-            </li>
-            <li className="border-b-2 border-teal-600 my-8 uppercase">
-              <Link onClick={() => setIsNavOpen(false)} href="/skills">
-                Skills
-              </Link>
-            </li>
-            <li className="border-b-2 border-teal-600 my-8 uppercase">
-              <Link onClick={() => setIsNavOpen(false)} href="/contact">
-                Contact
+              <Link onClick={() => setIsNavOpen(false)} href="/stats">
+                Stats
               </Link>
             </li>
           </ul>
