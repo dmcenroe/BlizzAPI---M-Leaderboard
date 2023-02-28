@@ -85,7 +85,7 @@ const Character = ({ charData, dungeonList }) => {
 
   if (router.isFallback) {
     return (
-      <div className="h-screen w-screen bg-slate-900 flex items-center">
+      <div className="h-screen w-screen flex items-center bg-slate-900">
         <Loading />
       </div>
     );

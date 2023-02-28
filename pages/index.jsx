@@ -91,23 +91,24 @@ const Home = ({ dungeonList, realmList }) => {
         <title>Mythic+ Leaderboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
-
-      <main className="bg-slate-900 w-screen h-full">
-        <div className="p-20 text-center">
-          <div className="text-6xl font-black tracking-wider text-stone-100">
-            M+ Weekly Leaderboard
+      <div className="w-screen min-h-screen">
+        <Navbar />
+        <main className="bg-slate-900 border-4 border-red-900 w-full h-full px-4">
+          <div className="text-center w-full">
+            <p className="font-black text-2xl lg:text-5xl mt-12 tracking-wider text-stone-100">
+              M+ Weekly Leaderboard
+            </p>
           </div>
-        </div>
-        <Filters dungeons={dungeonList} />
-        {loading ? (
-          <div className="bg-slate-900 w-screen h-screen">
-            <Loading />
-          </div>
-        ) : (
-          <Pagination currentLeaderBoard={currentLeaderBoard} />
-        )}
-      </main>
+          <Filters dungeons={dungeonList} />
+          {loading ? (
+            <div className="w-screen h-screen bg-slate-900">
+              <Loading />
+            </div>
+          ) : (
+            <Pagination currentLeaderBoard={currentLeaderBoard} />
+          )}
+        </main>
+      </div>
     </>
   );
 };

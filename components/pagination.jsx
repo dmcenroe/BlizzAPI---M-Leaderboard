@@ -39,53 +39,56 @@ export default function Pagination({ currentLeaderBoard }) {
   };
   return (
     <FadeIn delay={100} duration={800}>
-      <table className="w-3/4 border-collapse m-auto">
+      <table className="w-11/12 lg:w-10/12 border-collapse m-auto h-full">
         <thead>
-          <tr className="flex mb-1 gap-4 text-stone-100">
-            <th className=" w-2/12 font-light" scope="col">
+          <tr className="grid grid-cols-3 lg:grid-cols-8 mb-1 text-stone-100">
+            <th className=" font-light text-center" scope="col">
               Rank
             </th>
-            <th className="w-5/12 font-light" scope="col">
-              Keystone Level
+            <th className="font-light" scope="col">
+              Keystone
             </th>
-            <th className="w-3/12 font-light" scope="col">
+            <th className="hidden lg:block font-light" scope="col">
               Time
             </th>
-            <th className="w-5/12 text-start font-light" scope="col">
+            <th className="font-light text-center lg:text-start" scope="col">
               Party
             </th>
-            <th className="w-5/12 text-start" scope="col"></th>
-            <th className="w-5/12 text-start" scope="col"></th>
-            <th className="w-5/12 text-start" scope="col"></th>
-            <th className="w-5/12 text-start" scope="col"></th>
+            <th className="hidden lg:block" scope="col"></th>
+            <th className="hidden lg:block" scope="col"></th>
+            <th className="hidden lg:block" scope="col"></th>
+            <th className="hidden lg:block" scope="col"></th>
           </tr>
         </thead>
         <tbody>
           {currentRecords.map((group) => (
             <tr
-              className="h-10 items-center flex bg-gray mb-2 gap-4 font-light cursor-pointer hover:bg-slate-700 bg-slate-800 rounded-sm text-indigo-200"
+              className="py-1 lg:py-0 lg:h-10 items-center grid grid-cols-3 lg:grid-cols-8 bg-gray mb-2 font-light cursor-pointer hover:bg-slate-700 bg-slate-800 rounded-sm text-indigo-200"
               key={group.ranking}
             >
-              <td className="w-2/12 text-center">{group.ranking}</td>
-              <td className="w-5/12 text-center">{group.keystone_level}</td>
-              <td className="w-3/12">{msToTime(group.duration)}</td>
-
-              {group.members.map((member) => (
-                <td className="flex w-5/12 gap-1" key={member.profile.id}>
-                  <img
-                    className="w-5 h-5"
-                    src={specMedia[member.specialization.id]}
-                  ></img>
-                  <Link
-                    className=" hover:underline underline-offset-4 hover:text-white"
-                    href={`/character/${
-                      member.profile.realm.slug
-                    }/${member.profile.name.toLowerCase()}`}
-                  >
-                    {member.profile.name}
-                  </Link>
-                </td>
-              ))}
+              <td className="text-center">{group.ranking}</td>
+              <td className="text-center">{group.keystone_level}</td>
+              <td className="hidden lg:block text-center">
+                {msToTime(group.duration)}
+              </td>
+              <td className="grid grid-cols-1 lg:grid-cols-5 lg:col-span-5">
+                {group.members.map((member) => (
+                  <div className="flex flex-row gap-2 items-center">
+                    <img
+                      className="w-4 h-4 lg:w-5 lg:h-5"
+                      src={specMedia[member.specialization.id]}
+                    ></img>
+                    <Link
+                      className=" hover:underline underline-offset-4 text-xs lg:text-base hover:text-white truncate"
+                      href={`/character/${
+                        member.profile.realm.slug
+                      }/${member.profile.name.toLowerCase()}`}
+                    >
+                      {member.profile.name}
+                    </Link>
+                  </div>
+                ))}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -129,7 +132,7 @@ export default function Pagination({ currentLeaderBoard }) {
                 href="#"
                 className={` ${
                   currentPage === num ? "bg-gray-700 text-white" : "bg-gray-800"
-                } px-3 py-2 leading-tight  border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white`}
+                } px-3 py-2 leading-tight  border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white hidden lg:block`}
               >
                 {num}
               </a>

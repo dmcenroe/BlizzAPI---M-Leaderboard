@@ -113,7 +113,7 @@ export default function Filters({ dungeons }) {
   }, [dungeonList, cleanRealmList]);
 
   return (
-    <div className="flex gap-8 mb-12 justify-center">
+    <div className="flex flex-row gap-8 mb-12 mt-8 justify-center">
       <div className="relative">
         <label htmlFor="realm-leaderboard"></label>
         <input
@@ -122,13 +122,13 @@ export default function Filters({ dungeons }) {
             handleRealmSearch(event);
           }}
           autoComplete="off"
-          className="block w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate"
+          className="block w-36 lg:w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate"
           placeholder="realm..."
         ></input>
         {realmSearching && filteredRealms.length > 0 && realmSearch > "" ? (
           <ul
             id="realm-leaderboard-dropdown"
-            className="block w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate space-y-2 list-none text-left pl-2 pt-1 pb-1 mt-1 absolute"
+            className="block w-36 lg:w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate space-y-2 list-none text-left pl-2 pt-1 pb-1 mt-1 absolute"
           >
             {filteredRealms.map((realm) => {
               return (
@@ -145,27 +145,13 @@ export default function Filters({ dungeons }) {
           </ul>
         ) : null}
       </div>
-      {/* <select
-        id="realm-select"
-        onChange={(event) => {
-          handleRealmChange(event);
-        }}
-        className="block w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate"
-      >
-        {realmList.map((connectedRealm) =>
-          connectedRealm.realms.map((singleRealm) => (
-            <option key={singleRealm.id} value={connectedRealm.id}>
-              {singleRealm.name.en_US}
-            </option>
-          ))
-        )}
-      </select> */}
+
       <select
         id="dungeon-select"
         onChange={(event) => {
           handleDungeonChange(event);
         }}
-        className="block w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate"
+        className="block w-36 lg:w-48 bg-indigo-800 text-stone-200 hover:bg-indigo-700 px-2 py-2 pr-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline truncate"
       >
         {dungeonList.map((dungeon) => (
           <option key={dungeon.id} value={dungeon.id}>
