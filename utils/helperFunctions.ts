@@ -1,3 +1,3 @@
-export function msToTime(ms) {
-	return new Date(ms).toISOString().slice(11, 19);
+export function msToTime(ms: number) {
+  return new Date(ms).toISOString().slice(11, 19);
 }
