@@ -93,9 +93,9 @@ const Home = ({ dungeonList, realmList }) => {
       </Head>
       <div className="w-screen min-h-screen">
         <Navbar />
-        <main className="bg-slate-900 border-4 border-red-900 w-full h-full px-4">
+        <main className="bg-slate-900 w-full h-full px-4">
           <div className="text-center w-full">
-            <p className="font-black text-2xl lg:text-5xl mt-12 tracking-wider text-stone-100">
+            <p className="font-black text-2xl lg:text-5xl pt-6 lg:pt-12 tracking-wider text-stone-100">
               M+ Weekly Leaderboard
             </p>
           </div>

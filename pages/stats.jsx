@@ -103,10 +103,10 @@ const Stats = ({ dungeonList }) => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-900 border-4 border-red-800">
+    <div className="w-full min-h-screen bg-slate-900">
       <Navbar />
       <div className="p-12">
-        <div className="text-2xl lg:text-5xl font-sans text-stone-200 font-extrabold text-center mb-12">
+        <div className="text-4xl lg:text-5xl font-sans text-stone-200 font-extrabold text-center mb-12">
           Specialization Popularity
         </div>
         <Filters dungeons={dungeonList} />

@@ -92,15 +92,13 @@ const Character = ({ charData, dungeonList }) => {
   }
 
   return (
-    <>
+    <div className=" w-screen h-screen min-h-screen bg-slate-900">
       <Head>
         <title>{charData.character.name} Mythic+ Profile</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Navbar />
-
-      <div className="p-4 w-screen h-screen bg-slate-900">
+      <div className="m-4">
         <Link href={"/"}>
           <button
             className={`${
@@ -116,8 +114,9 @@ const Character = ({ charData, dungeonList }) => {
             <ArrowLeftIcon className="5-10 w-10 text-indigo-200"></ArrowLeftIcon>
           </button>
         </Link>
-
-        <div className="text-7xl font-black tracking-wider text-stone-100 font-sans m-auto w-max mb-3">
+      </div>
+      <div className=" bg-slate-900 flex flex-col items-center pb-8">
+        <div className="text-7xl font-black tracking-wider text-stone-100 font-sans m-auto w-max mb-3 lg:pt-12 pt-8">
           {charData.character.name}
         </div>
         <div className="text-l mb-20 text-stone-100 w-max m-auto bg-indigo-800 pl-3 pr-3 p-1 rounded-lg">
@@ -128,13 +127,13 @@ const Character = ({ charData, dungeonList }) => {
           Season Best Mythic Dungeons
         </div>
         <FadeIn delay={100} duration={800}>
-          <div className="grid grid-cols-4 gap-4 w-max m-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             {bestRuns.map((run) => (
               <div>
                 {run.complete === false ? null : (
                   <div
                     key={run.dungeon.name}
-                    className="flex-col text-center h-72 w-72 relative border border-slate-900 rounded-sm cursor-pointer hover:scale-105 bg-gradient-to-b from-slate-800 hover:to-indigo-900 transition duration-500 ease-in-out"
+                    className="flex-col text-center h-72 w-auto relative border border-slate-900 rounded-sm cursor-pointer hover:scale-105 bg-gradient-to-b from-slate-800 hover:to-indigo-900 transition duration-500 ease-in-out"
                   >
                     <div className="text-base text-indigo-200 bg-indigo-800 w-10/12 rounded-lg p-1 tracking-wide font-medium m-auto mt-3 mb-3 mb-0.25">
                       {run.dungeon.name}
@@ -155,7 +154,7 @@ const Character = ({ charData, dungeonList }) => {
           </div>
         </FadeIn>
       </div>
-    </>
+    </div>
   );
 };
 
