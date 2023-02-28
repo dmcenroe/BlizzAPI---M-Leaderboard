@@ -51,7 +51,7 @@ export default function Pagination({ currentLeaderBoard }) {
             <th className="hidden lg:block font-light" scope="col">
               Time
             </th>
-            <th className="font-light text-center lg:text-start" scope="col">
+            <th className="font-light text-start" scope="col">
               Party
             </th>
             <th className="hidden lg:block" scope="col"></th>
@@ -71,7 +71,7 @@ export default function Pagination({ currentLeaderBoard }) {
               <td className="hidden lg:block text-center">
                 {msToTime(group.duration)}
               </td>
-              <td className="grid grid-cols-1 lg:grid-cols-5 lg:col-span-5">
+              <td className="grid grid-cols-1 justify-items-start lg:grid-cols-5 lg:col-span-5">
                 {group.members.map((member) => (
                   <div className="flex flex-row gap-2 items-center">
                     <img
