@@ -123,13 +123,13 @@ export default function SearchBar() {
           setCharSearch(event.target.value);
         }}
         autoComplete="off"
-        className="w-24 lg:w-36 h-8 lg:h-9 pl-2 rounded-l-none text-sm bg-slate-100 placeholder:text-slate-500 focus:outline-0"
+        className="w-24 lg:w-36 h-8 lg:h-9 pl-2 rounded-none text-sm bg-slate-100 placeholder:text-slate-500 focus:outline-0"
         placeholder="character..."
       ></input>
 
       <button
         type="submit"
-        className="h-8 w-8 lg:h-9 lg:w-9 bg-slate-800 rounded-r-sm"
+        className="h-8 w-8 lg:h-9 lg:w-9 bg-slate-800 rounded-r-sm rounded-l-none"
       >
         <svg
           aria-hidden="true"
