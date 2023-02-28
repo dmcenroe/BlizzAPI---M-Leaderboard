@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import blizzAPI from "../../utils/blizzAPI";
 import Head from "next/head";
@@ -38,9 +37,8 @@ export async function getStaticProps({ params }) {
   }
 }
 
-const Character: NextPage = ({ charData, dungeonList }) => {
+const Character = ({ charData, dungeonList }) => {
   const router = useRouter();
-  console.log(charData);
 
   const [buttonPress, setButtonPress] = useState(false);
   const [bestRuns, setBestRuns] = useState([]);
@@ -69,20 +67,6 @@ const Character: NextPage = ({ charData, dungeonList }) => {
         } else return runs[1];
       });
 
-      console.log(
-        topRuns.sort((a, b) => {
-          if (a.keystone_level < b.keystone_level) {
-            return -1;
-          }
-
-          if (a.keystone_level > b.keystone_level) {
-            return 1;
-          }
-
-          return 0;
-        })
-      );
-
       setBestRuns(
         topRuns.sort((a, b) => {
           if (a.keystone_level < b.keystone_level) {
@@ -96,7 +80,6 @@ const Character: NextPage = ({ charData, dungeonList }) => {
           return 0;
         })
       );
-      console.log("bestruns ok", bestRuns);
     }
   }, [charData]);
 

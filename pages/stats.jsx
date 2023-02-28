@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { Navbar } from "../components/navbar";
 import Filters from "../components/filters";
 import blizzAPI from "../utils/blizzAPI";
@@ -25,7 +24,7 @@ export async function getStaticProps() {
   };
 }
 
-const Stats: NextPage = ({ dungeonList }) => {
+const Stats = ({ dungeonList }) => {
   const dispatch = useDispatch();
   const selectedRealmId = useSelector(selectConnectedRealm);
   const selectedDungeonId = useSelector(selectDungeonId);

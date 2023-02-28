@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import blizzAPI from "../utils/blizzAPI";
 import { useEffect, useState, useRef } from "react";
@@ -16,7 +15,6 @@ import Pagination from "../components/pagination";
 import { Navbar } from "../components/navbar";
 
 export async function getStaticProps() {
-  console.log("static props");
   const dungeonList = await blizzAPI.query(
     "/data/wow/connected-realm/11/mythic-leaderboard/index?namespace=dynamic-us&locale=en_US"
   );
@@ -31,7 +29,7 @@ export async function getStaticProps() {
   };
 }
 
-const Home: NextPage = ({ dungeonList, realmList }) => {
+const Home = ({ dungeonList, realmList }) => {
   const dispatch = useDispatch();
 
   const initialRender = useRef(true);
@@ -44,6 +42,7 @@ const Home: NextPage = ({ dungeonList, realmList }) => {
   const storedLeaderBoard = useSelector(selectLeaderBoardData);
 
   const getLeaderBoard = async () => {
+    console.log("fetching");
     const response = await fetch(
       `/api/leaderboard/${selectedRealmId}/${selectedDungeonId}`
     );

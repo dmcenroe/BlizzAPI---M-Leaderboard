@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
+import { FC } from "react";
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -8,24 +9,30 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `;
-const FadeIn = ({ duration = 300, delay = 0, children, ...delegated }) => {
-	return (
-		<Wrapper
-			{...delegated}
-			style={{
-				...(delegated.style || {}),
-				animationDuration: duration + "ms",
-				animationDelay: delay + "ms",
-			}}
-		>
-			{children}
-		</Wrapper>
-	);
+
+const FadeIn: FC<any> = ({
+  duration = 300,
+  delay = 0,
+  children,
+  ...delegated
+}) => {
+  return (
+    <Wrapper
+      {...delegated}
+      style={{
+        ...(delegated.style || {}),
+        animationDuration: duration + "ms",
+        animationDelay: delay + "ms",
+      }}
+    >
+      {children}
+    </Wrapper>
+  );
 };
 const Wrapper = styled.div`
-	@media (prefers-reduced-motion: no-preference) {
-		animation-name: ${fadeIn};
-		animation-fill-mode: backwards;
-	}
+  @media (prefers-reduced-motion: no-preference) {
+    animation-name: ${fadeIn};
+    animation-fill-mode: backwards;
+  }
 `;
 export default FadeIn;

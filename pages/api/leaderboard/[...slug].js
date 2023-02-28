@@ -1,11 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
 import blizzAPI from "../../../utils/blizzAPI";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req, res) {
   const { slug } = req.query;
   const dungeonId = slug[1];
   const connRealmId = slug[0];

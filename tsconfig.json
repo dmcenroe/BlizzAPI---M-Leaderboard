@@ -15,6 +15,17 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/stats.jsx",
+    "pages/index.jsx",
+    "pages/character/[...slug].jsx",
+    "pages/api/leaderboard/[...slug].js",
+    "components/searchbar.jsx",
+    "components/pagination.jsx",
+    "components/filters.jsx"
+  ],
   "exclude": ["node_modules"]
 }

@@ -63,7 +63,7 @@ export default function Pagination({ currentLeaderBoard }) {
         <tbody>
           {currentRecords.map((group) => (
             <tr
-              className="h-10 items-center flex bg-gray mb-2 gap-4 font-light rounded-sm cursor-pointer hover:bg-slate-700 bg-slate-800 rounded-sm text-indigo-200"
+              className="h-10 items-center flex bg-gray mb-2 gap-4 font-light cursor-pointer hover:bg-slate-700 bg-slate-800 rounded-sm text-indigo-200"
               key={group.ranking}
             >
               <td className="w-2/12 text-center">{group.ranking}</td>
